@@ -1,0 +1,39 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/index.js",
+            "use": "@vercel/node"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/index.js"
+        },
+        {
+            "src": "/teacher/(.*)",
+            "dest": "/public/teacher/$1"
+        },
+        {
+            "src": "/student/(.*)",
+            "dest": "/public/student/$1"
+        },
+        {
+            "src": "/teacher",
+            "dest": "/public/teacher/index.html"
+        },
+        {
+            "src": "/student",
+            "dest": "/public/student/index.html"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/public/$1"
+        }
+    ]
+}

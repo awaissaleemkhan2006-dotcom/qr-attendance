@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Attendance — Teacher Portal</title>
+    <meta name="description" content="Secure QR-Based Attendance Management System — Teacher Dashboard">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ── Login Screen ───────────────────────────────────────── -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-glow"></div>
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <circle cx="17.5" cy="17.5" r="3.5"/>
+                        </svg>
+                    </div>
+                    <h1>QR Attendance</h1>
+                    <p class="subtitle">Teacher Portal</p>
+                </div>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-id">University ID</label>
+                        <input type="text" id="login-id" placeholder="Enter your university ID" required autocomplete="username">
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter password" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+                        <span>Sign In</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <div id="login-error" class="error-msg hidden"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Dashboard ──────────────────────────────────────────── -->
+    <div id="dashboard-screen" class="screen">
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <div class="logo-icon small">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <circle cx="17.5" cy="17.5" r="3.5"/>
+                    </svg>
+                </div>
+                <span>QR Attendance</span>
+            </div>
+            <div class="nav-user">
+                <span id="nav-user-name">Teacher</span>
+                <button class="btn btn-ghost" id="logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <main class="dashboard-content">
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon courses">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 016.5 2H20v20H6.5a2.5 2.5 0 010-5H20"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-courses">0</span>
+                        <span class="stat-label">Courses</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon sessions">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-sessions">0</span>
+                        <span class="stat-label">Sessions</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon active">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-active">0</span>
+                        <span class="stat-label">Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Management -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>My Courses</h2>
+                    <button class="btn btn-accent" id="create-course-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                        <span>New Course</span>
+                    </button>
+                </div>
+                <div id="courses-list" class="cards-grid">
+                    <div class="empty-state">No courses yet. Create one to get started.</div>
+                </div>
+            </section>
+
+            <!-- Session History -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Session History</h2>
+                </div>
+                <div id="sessions-list" class="table-container">
+                    <div class="empty-state">No sessions yet.</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ── Active Session (Live QR) ──────────────────────────── -->
+    <div id="session-screen" class="screen">
+        <nav class="top-nav">
+            <button class="btn btn-ghost" id="back-to-dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <span>Dashboard</span>
+            </button>
+            <div class="session-badge" id="session-badge">
+                <div class="pulse-dot"></div>
+                <span>LIVE SESSION</span>
+            </div>
+            <button class="btn btn-danger" id="stop-session-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+                <span>End Session</span>
+            </button>
+        </nav>
+
+        <main class="session-content">
+            <div class="session-layout">
+                <!-- QR Code Column -->
+                <div class="qr-column">
+                    <div class="qr-card">
+                        <div class="qr-header">
+                            <h2 id="session-course-name">Course Name</h2>
+                            <span class="session-id-label" id="session-id-label">Session ID</span>
+                        </div>
+                        <div class="qr-display">
+                            <img id="qr-image" src="" alt="QR Code">
+                            <div class="qr-overlay" id="qr-overlay">
+                                <div class="spinner"></div>
+                                <span>Generating QR...</span>
+                            </div>
+                        </div>
+                        <div class="qr-timer">
+                            <div class="timer-bar">
+                                <div class="timer-fill" id="timer-fill"></div>
+                            </div>
+                            <span class="timer-text" id="timer-text">Refreshes in 10s</span>
+                        </div>
+                        <p class="qr-hint">Students scan this code to mark attendance</p>
+                    </div>
+                </div>
+
+                <!-- Attendance Column -->
+                <div class="attendance-column">
+                    <div class="attendance-card">
+                        <div class="attendance-header">
+                            <h3>Live Attendance</h3>
+                            <span class="attendance-count" id="live-count">0</span>
+                        </div>
+                        <div id="live-attendance-list" class="attendance-list">
+                            <div class="empty-state small">Waiting for students to scan...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ── Modals ─────────────────────────────────────────────── -->
+    <!-- Create Course Modal -->
+    <div class="modal-overlay" id="create-course-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Course</h3>
+                <button class="btn btn-ghost modal-close" data-modal="create-course-modal">&times;</button>
+            </div>
+            <form id="create-course-form">
+                <div class="input-group">
+                    <label for="course-code">Course Code</label>
+                    <input type="text" id="course-code" placeholder="e.g., CS-301" required>
+                </div>
+                <div class="input-group">
+                    <label for="course-name">Course Name</label>
+                    <input type="text" id="course-name" placeholder="e.g., Software Engineering" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Course</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Enroll Student Modal -->
+    <div class="modal-overlay" id="enroll-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Enroll Student</h3>
+                <button class="btn btn-ghost modal-close" data-modal="enroll-modal">&times;</button>
+            </div>
+            <form id="enroll-form">
+                <input type="hidden" id="enroll-course-id">
+                <div class="input-group">
+                    <label for="enroll-student-id">Student University ID</label>
+                    <input type="text" id="enroll-student-id" placeholder="e.g., 2021001" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Enroll Student</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Attendance Modal -->
+    <div class="modal-overlay" id="attendance-modal">
+        <div class="modal modal-wide">
+            <div class="modal-header">
+                <h3 id="attendance-modal-title">Session Attendance</h3>
+                <button class="btn btn-ghost modal-close" data-modal="attendance-modal">&times;</button>
+            </div>
+            <div id="attendance-modal-content" class="attendance-list">
+                <div class="empty-state">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

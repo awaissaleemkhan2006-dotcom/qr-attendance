@@ -1,0 +1,7 @@
+node_modules/
+.env
+local.db
+*.db
+test-api.js
+backend/flask-api/instance/
+backend/express-api/node_modules/

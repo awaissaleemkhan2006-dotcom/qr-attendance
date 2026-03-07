@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Attendance — Student Portal</title>
+    <meta name="description" content="Secure QR-Based Attendance Management System — Student Portal">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ── Login Screen ───────────────────────────────────────── -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-glow"></div>
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <circle cx="17.5" cy="17.5" r="3.5" />
+                        </svg>
+                    </div>
+                    <h1>QR Attendance</h1>
+                    <p class="subtitle">Student Portal</p>
+                </div>
+
+                <!-- Login Tab -->
+                <div id="login-tab">
+                    <form id="login-form">
+                        <div class="input-group">
+                            <label for="login-id">University ID</label>
+                            <input type="text" id="login-id" placeholder="Enter your university ID" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+                            <span>Sign In</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </form>
+                    <p class="auth-switch">Don't have an account? <button class="btn-link"
+                            id="show-register">Register</button></p>
+                </div>
+
+                <!-- Register Tab -->
+                <div id="register-tab" class="hidden">
+                    <form id="register-form">
+                        <div class="input-group">
+                            <label for="reg-name">Full Name</label>
+                            <input type="text" id="reg-name" placeholder="John Doe" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-id">University ID</label>
+                            <input type="text" id="reg-id" placeholder="e.g., 2021001" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-email">Email</label>
+                            <input type="email" id="reg-email" placeholder="student@university.edu" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="reg-password">Password</label>
+                            <input type="password" id="reg-password" placeholder="Min 6 characters" required
+                                minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+                            <span>Create Account</span>
+                        </button>
+                    </form>
+                    <p class="auth-switch">Already registered? <button class="btn-link" id="show-login">Sign In</button>
+                    </p>
+                </div>
+
+                <div id="auth-error" class="error-msg hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Dashboard ──────────────────────────────────────────── -->
+    <div id="dashboard-screen" class="screen">
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <div class="logo-icon small">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <circle cx="17.5" cy="17.5" r="3.5" />
+                    </svg>
+                </div>
+                <span>QR Attendance</span>
+            </div>
+            <div class="nav-user">
+                <span id="nav-user-name">Student</span>
+                <button class="btn btn-ghost" id="logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <main class="dashboard-content">
+            <!-- Device Binding Notice -->
+            <div id="device-notice" class="notice-card hidden">
+                <div class="notice-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </div>
+                <div class="notice-content">
+                    <h3>Device Binding Active</h3>
+                    <p>Your account is bound to this device. Attendance can only be marked from this device for
+                        security.</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-card" id="open-scanner">
+                    <div class="action-icon scan">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2" />
+                            <rect x="7" y="7" width="10" height="10" rx="1" />
+                        </svg>
+                    </div>
+                    <span class="action-label">Scan QR Code</span>
+                    <span class="action-hint">Mark your attendance</span>
+                </button>
+                <button class="action-card" id="view-history-btn">
+                    <div class="action-icon history">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <span class="action-label">Attendance History</span>
+                    <span class="action-hint">View your records</span>
+                </button>
+            </div>
+
+            <!-- Enrolled Courses -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>My Courses</h2>
+                </div>
+                <div id="courses-list" class="cards-grid">
+                    <div class="empty-state">Loading courses...</div>
+                </div>
+            </section>
+
+            <!-- Recent Attendance -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Recent Attendance</h2>
+                </div>
+                <div id="recent-attendance" class="table-container">
+                    <div class="empty-state">Loading...</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ── QR Scanner Screen ──────────────────────────────────── -->
+    <div id="scanner-screen" class="screen">
+        <nav class="top-nav">
+            <button class="btn btn-ghost" id="back-to-dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span>Back</span>
+            </button>
+            <h2 class="nav-title">Scan QR Code</h2>
+            <div></div>
+        </nav>
+
+        <main class="scanner-content">
+            <div class="scanner-card">
+                <div id="scanner-viewfinder" class="scanner-viewfinder">
+                    <div class="viewfinder-corner tl"></div>
+                    <div class="viewfinder-corner tr"></div>
+                    <div class="viewfinder-corner bl"></div>
+                    <div class="viewfinder-corner br"></div>
+                    <div id="scanner-placeholder" class="scanner-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2" />
+                            <rect x="7" y="7" width="10" height="10" rx="1" />
+                        </svg>
+                        <p>Camera will appear here</p>
+                    </div>
+                </div>
+                <div class="scanner-actions">
+                    <button class="btn btn-primary btn-full" id="start-scan-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polygon points="10 8 16 12 10 16 10 8" />
+                        </svg>
+                        <span>Start Camera</span>
+                    </button>
+                    <button class="btn btn-danger btn-full hidden" id="stop-scan-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <rect x="9" y="9" width="6" height="6" />
+                        </svg>
+                        <span>Stop Camera</span>
+                    </button>
+                </div>
+                <div id="scan-result" class="scan-result hidden">
+                    <div class="scan-result-icon"></div>
+                    <p class="scan-result-text"></p>
+                </div>
+                <p class="scanner-hint">Point your camera at the QR code displayed by your teacher</p>
+            </div>
+
+            <!-- Manual Entry (fallback) -->
+            <div class="manual-entry">
+                <h3>Or paste QR data manually</h3>
+                <div class="input-group">
+                    <textarea id="manual-qr-data" rows="4" placeholder='Paste the QR JSON data here...'></textarea>
+                </div>
+                <button class="btn btn-accent btn-full" id="manual-submit-btn">Submit Manually</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- ── History Screen ─────────────────────────────────────── -->
+    <div id="history-screen" class="screen">
+        <nav class="top-nav">
+            <button class="btn btn-ghost" id="history-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span>Back</span>
+            </button>
+            <h2 class="nav-title">Attendance History</h2>
+            <div></div>
+        </nav>
+        <main class="dashboard-content">
+            <div id="full-history" class="table-container">
+                <div class="empty-state">Loading...</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- QR Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
