@@ -16,24 +16,32 @@
             "dest": "/api/index.js"
         },
         {
-            "src": "/teacher/(.*)",
-            "dest": "/public/teacher/$1"
+            "src": "/teacher/app.js",
+            "dest": "/public/teacher/app.js"
         },
         {
-            "src": "/student/(.*)",
-            "dest": "/public/student/$1"
+            "src": "/teacher/style.css",
+            "dest": "/public/teacher/style.css"
         },
         {
             "src": "/teacher",
             "dest": "/public/teacher/index.html"
         },
         {
+            "src": "/student/app.js",
+            "dest": "/public/student/app.js"
+        },
+        {
+            "src": "/student/style.css",
+            "dest": "/public/student/style.css"
+        },
+        {
             "src": "/student",
             "dest": "/public/student/index.html"
         },
         {
-            "src": "/(.*)",
-            "dest": "/public/$1"
+            "src": "/",
+            "dest": "/public/index.html"
         }
     ]
 }

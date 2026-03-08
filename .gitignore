@@ -5,3 +5,4 @@ local.db
 test-api.js
 backend/flask-api/instance/
 backend/express-api/node_modules/
+.vercel
