@@ -1,47 +1,19 @@
 {
-    "version": 2,
-    "builds": [
+    "rewrites": [
         {
-            "src": "api/index.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "public/**",
-            "use": "@vercel/static"
+            "source": "/api/:path*",
+            "destination": "/api/index.js"
         }
     ],
-    "routes": [
+    "headers": [
         {
-            "src": "/api/(.*)",
-            "dest": "/api/index.js"
-        },
-        {
-            "src": "/teacher/app.js",
-            "dest": "/public/teacher/app.js"
-        },
-        {
-            "src": "/teacher/style.css",
-            "dest": "/public/teacher/style.css"
-        },
-        {
-            "src": "/teacher",
-            "dest": "/public/teacher/index.html"
-        },
-        {
-            "src": "/student/app.js",
-            "dest": "/public/student/app.js"
-        },
-        {
-            "src": "/student/style.css",
-            "dest": "/public/student/style.css"
-        },
-        {
-            "src": "/student",
-            "dest": "/public/student/index.html"
-        },
-        {
-            "src": "/",
-            "dest": "/public/index.html"
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "no-store"
+                }
+            ]
         }
     ]
 }

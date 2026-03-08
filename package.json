@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "dev": "node api/index.js",
-        "vercel-build": "echo 'No build step needed'"
+        "vercel-build": "echo build done"
     },
     "dependencies": {
         "@libsql/client": "^0.14.0",
