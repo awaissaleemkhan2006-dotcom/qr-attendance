@@ -8,11 +8,21 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const QRCode = require('qrcode');
+const path = require('path');
 const { getDb, initializeDatabase } = require('../lib/db');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// ─── Serve Static Frontend Files ──────────────────────────────
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+app.use(express.static(PUBLIC_DIR));
+
+// Page routes — serve HTML files for /teacher and /student
+app.get('/teacher', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'teacher', 'index.html')));
+app.get('/student', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'student', 'index.html')));
+app.get('/', (req, res) => res.redirect('/teacher'));
 
 // ─── Config ────────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || 'jwt-super-secret-change-in-production';
@@ -574,9 +584,9 @@ app.post('/api/attendance/mark', verifyToken, requireRole('student'), async (req
 // ═══════════════════════════════════════════════════════════════
 // Start server (local dev) or export for Vercel
 // ═══════════════════════════════════════════════════════════════
-if (process.env.VERCEL) {
-    module.exports = app;
-} else {
+module.exports = app;
+
+if (require.main === module) {
     const PORT = process.env.PORT || 3001;
     app.listen(PORT, () => {
         console.log(`QR Attendance API running on port ${PORT}`);
