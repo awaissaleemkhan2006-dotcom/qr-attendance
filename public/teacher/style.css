@@ -11,35 +11,35 @@
     --bg-card-hover: rgba(30, 41, 59, 0.9);
     --bg-glass: rgba(255, 255, 255, 0.03);
     --bg-input: rgba(255, 255, 255, 0.05);
-    
+
     --text-primary: #f1f5f9;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
-    
+
     --accent-primary: #6366f1;
     --accent-primary-glow: rgba(99, 102, 241, 0.3);
     --accent-secondary: #8b5cf6;
     --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-    
+
     --success: #10b981;
     --success-glow: rgba(16, 185, 129, 0.2);
     --danger: #ef4444;
     --danger-glow: rgba(239, 68, 68, 0.2);
     --warning: #f59e0b;
-    
+
     --border: rgba(255, 255, 255, 0.06);
     --border-focus: rgba(99, 102, 241, 0.5);
-    
+
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 20px;
-    
+
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
     --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
-    
+
     --transition-fast: 0.15s ease;
     --transition-normal: 0.25s ease;
     --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -72,8 +72,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ── Login Screen ──────────────────────────────────────────── */
@@ -100,8 +107,17 @@ body {
 }
 
 @keyframes glowPulse {
-    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
 }
 
 .login-card {
@@ -553,8 +569,17 @@ body {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
-    50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+    }
+
+    50% {
+        opacity: 0.8;
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
 }
 
 .session-content {
@@ -640,7 +665,9 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .qr-timer {
@@ -729,8 +756,15 @@ body {
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .attendance-avatar {
@@ -880,24 +914,24 @@ body {
     .session-layout {
         grid-template-columns: 1fr;
     }
-    
+
     .dashboard-content {
         padding: 20px;
     }
-    
+
     .top-nav {
         padding: 12px 16px;
     }
-    
+
     .qr-display {
         width: 260px;
         height: 260px;
     }
-    
+
     .login-card {
         padding: 32px 24px;
     }
-    
+
     .cards-grid {
         grid-template-columns: 1fr;
     }
@@ -919,4 +953,21 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Delete Button ─────────────────────────────────────────── */
+.btn-delete {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+    transform: scale(1.08);
 }
