@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Attendance — Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/admin/style.css">
+</head>
+
+<body>
+
+    <!-- ── Login Screen ─────────────────────────────────────── -->
+    <div id="login-screen" class="screen active">
+        <div class="login-bg">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="admin-badge">ADMIN</div>
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <h1>Control Panel</h1>
+                    <p class="subtitle">QR Attendance System</p>
+                </div>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-user">Username</label>
+                        <input type="text" id="login-user" placeholder="Enter admin username" required
+                            autocomplete="username">
+                    </div>
+                    <div class="input-group">
+                        <label for="login-pass">Password</label>
+                        <input type="password" id="login-pass" placeholder="Enter password" required
+                            autocomplete="current-password">
+                    </div>
+                    <div id="login-error" class="error-msg hidden"></div>
+                    <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+                        <span>Access Panel</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Dashboard Screen ─────────────────────────────────── -->
+    <div id="dashboard-screen" class="screen">
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <div class="admin-dot"></div>
+                <span>Admin Panel</span>
+            </div>
+            <div class="nav-actions">
+                <a href="/teacher" target="_blank" class="btn btn-ghost btn-sm">Teacher Portal ↗</a>
+                <a href="/student" target="_blank" class="btn btn-ghost btn-sm">Student Portal ↗</a>
+                <button class="btn btn-danger btn-sm" id="logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <main class="dashboard-content">
+            <div class="page-header">
+                <h2>Teacher Management</h2>
+                <p class="page-subtitle">Register new teachers who can log into the Teacher Portal</p>
+            </div>
+
+            <div class="admin-layout">
+                <!-- Register Form -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M19 8v6M22 11h-6" />
+                        </svg>
+                        <h3>Register Teacher</h3>
+                    </div>
+                    <form id="register-form">
+                        <div class="input-group">
+                            <label for="t-name">Full Name</label>
+                            <input type="text" id="t-name" placeholder="e.g., Dr. Ahmed Khan" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="t-uid">University ID</label>
+                            <input type="text" id="t-uid" placeholder="e.g., GIKI-T-001" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="t-email">Email Address</label>
+                            <input type="email" id="t-email" placeholder="teacher@giki.edu.pk" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="t-pass">Password</label>
+                            <input type="password" id="t-pass" placeholder="Min 6 characters" required minlength="6">
+                        </div>
+                        <div id="register-msg" class="msg hidden"></div>
+                        <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                            <span>Register Teacher</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Registered Teachers List -->
+                <div class="teachers-card">
+                    <div class="card-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                        <h3>Registered Teachers</h3>
+                        <button class="btn btn-ghost btn-xs" id="refresh-btn">Refresh</button>
+                    </div>
+                    <div id="teachers-list" class="teachers-list">
+                        <div class="empty-state">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/admin/app.js"></script>
+</body>
+
+</html>

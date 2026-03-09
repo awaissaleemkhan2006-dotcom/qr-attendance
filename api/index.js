@@ -19,9 +19,10 @@ app.use(express.json());
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 app.use(express.static(PUBLIC_DIR));
 
-// Page routes — serve HTML files for /teacher and /student
+// Page routes — serve HTML files for /teacher, /student, /admin
 app.get('/teacher', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'teacher', 'index.html')));
 app.get('/student', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'student', 'index.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'admin', 'index.html')));
 app.get('/', (req, res) => res.redirect('/teacher'));
 
 // ─── Config ────────────────────────────────────────────────────
@@ -582,9 +583,32 @@ app.post('/api/attendance/mark', verifyToken, requireRole('student'), async (req
 });
 
 // ═══════════════════════════════════════════════════════════════
+// ADMIN ROUTES
+// ═══════════════════════════════════════════════════════════════
+
+// List all teachers (protected by X-Admin-Key header)
+app.get('/api/admin/teachers', async (req, res) => {
+    const adminKey = req.headers['x-admin-key'];
+    if (adminKey !== 'AZK:epstein') {
+        return res.status(403).json({ error: 'Forbidden' });
+    }
+    try {
+        const db = await ensureDb();
+        const result = await db.execute({
+            sql: "SELECT id, university_id, name, email, created_at FROM users WHERE role = 'teacher' ORDER BY created_at DESC",
+            args: [],
+        });
+        res.json({ teachers: result.rows });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch teachers' });
+    }
+});
+
+// ═══════════════════════════════════════════════════════════════
 // Start server (local dev) or export for Vercel
 // ═══════════════════════════════════════════════════════════════
 module.exports = app;
+
 
 if (require.main === module) {
     const PORT = process.env.PORT || 3001;
