@@ -216,10 +216,17 @@ async function loadSessions() {
                 : '<span class="badge badge-active"><span class="pulse-dot"></span> Active</span>'}
                             </td>
                             <td>${s.attendance_count}</td>
-                            <td>
+                            <td style="display:flex;gap:6px;flex-wrap:wrap;">
                                 <button class="btn btn-ghost btn-sm" onclick="viewSessionAttendance('${s.id}', '${escapeHtml(s.course_name || '')}')">
                                     View
                                 </button>
+                                ${!s.is_locked ? `
+                                <button class="btn btn-sm" style="background:rgba(124,106,247,0.15);color:#a78bfa;border:1px solid rgba(124,106,247,0.3);" onclick="resumeSession('${s.id}', '${escapeHtml(s.course_code || '')}', '${escapeHtml(s.course_name || '')}', '${s.course_id}')">
+                                    ▶ Resume
+                                </button>
+                                <button class="btn btn-sm" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3);" onclick="endSessionFromDashboard('${s.id}')">
+                                    End Session
+                                </button>` : ''}
                             </td>
                         </tr>
                     `).join('')}
@@ -339,31 +346,61 @@ async function startSession(courseId, courseName) {
 
 async function handleStopSession() {
     if (!activeSessionId) return;
+    await doStopSession(activeSessionId);
+    activeSessionId = null;
+    showDashboard();
+}
 
-    if (!confirm('Are you sure you want to end this session? Attendance records will be locked.')) return;
-
+// Can be called from dashboard OR live session screen
+async function doStopSession(sessionId) {
     try {
+        const btn = $('#stop-session-btn');
+        if (btn) { btn.disabled = true; btn.querySelector('span').textContent = 'Ending...'; }
+
         const res = await fetch(`${API_BASE}/sessions/stop`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
-            body: JSON.stringify({ session_id: activeSessionId })
+            body: JSON.stringify({ session_id: sessionId })
         });
 
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
 
         stopAllPolling();
-
         showToast(`Session ended. ${data.attendance_count || 0} students marked present.`, 'success');
-        activeSessionId = null;
-        showDashboard();
-
+        return true;
     } catch (err) {
         showToast(err.message, 'error');
+        return false;
+    } finally {
+        const btn = $('#stop-session-btn');
+        if (btn) { btn.disabled = false; btn.querySelector('span').textContent = 'End Session'; }
     }
+}
+
+// End an active session directly from the dashboard
+async function endSessionFromDashboard(sessionId) {
+    const ok = await doStopSession(sessionId);
+    if (ok) loadSessions();
+}
+
+// Resume an active session — go back to live session screen + restart QR polling
+function resumeSession(sessionId, courseCode, courseName, courseId) {
+    activeSessionId = sessionId;
+
+    // Set up the session screen labels
+    const courseNameEl = document.getElementById('session-course-name');
+    const sessionLabelEl = document.getElementById('session-id-label');
+    if (courseNameEl) courseNameEl.textContent = `${courseCode} — ${courseName}`;
+    if (sessionLabelEl) sessionLabelEl.textContent = `Session ID: ${sessionId.slice(0, 8)}…`;
+
+    // Navigate to session screen and start QR polling
+    showScreen('session-screen');
+    startQRPolling(sessionId);
+    loadLiveAttendance(sessionId);
 }
 
 // ─── QR Polling (replaces WebSocket) ──────────────────────────
