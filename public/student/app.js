@@ -195,7 +195,10 @@ async function handleRegister(e) {
                 university_id: $('#reg-id').value.trim(),
                 email: $('#reg-email').value.trim(),
                 password: $('#reg-password').value,
-                role: 'student'
+                role: 'student',
+                class_batch: $('#reg-batch')?.value?.trim() || null,
+                semester: $('#reg-semester')?.value?.trim() || null,
+                program: $('#reg-program')?.value?.trim() || null,
             })
         });
 

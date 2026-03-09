@@ -96,7 +96,9 @@ async function handleRegister(e) {
                 university_id: $('#t-uid').value.trim(),
                 email: $('#t-email').value.trim(),
                 password: $('#t-pass').value,
-                role: 'teacher'
+                role: 'teacher',
+                department: $('#t-dept')?.value?.trim() || null,
+                designation: $('#t-desig')?.value?.trim() || 'Lecturer',
             })
         });
 

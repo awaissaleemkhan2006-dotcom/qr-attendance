@@ -121,7 +121,7 @@ app.get('/api/health', (req, res) => {
 app.post('/api/auth/register', async (req, res) => {
     try {
         const db = await ensureDb();
-        const { university_id, name, email, password, role } = req.body;
+        const { university_id, name, email, password, role, department, designation, class_batch, semester, program } = req.body;
 
         if (!university_id || !name || !email || !password || !role) {
             return res.status(400).json({ error: 'All fields are required' });
@@ -140,13 +140,26 @@ app.post('/api/auth/register', async (req, res) => {
         }
 
         const id = uuidv4();
+        const profileId = uuidv4();
         const password_hash = hashPassword(password);
 
         await db.execute({
-            sql: `INSERT INTO users (id, university_id, name, email, password_hash, role)
-                  VALUES (?, ?, ?, ?, ?, ?)`,
+            sql: `INSERT INTO users (id, university_id, name, email, password_hash, role) VALUES (?, ?, ?, ?, ?, ?)`,
             args: [id, university_id, name, email, password_hash, role],
         });
+
+        // Auto-create role-specific profile
+        if (role === 'teacher') {
+            await db.execute({
+                sql: `INSERT INTO teacher_profiles (id, teacher_id, department, designation) VALUES (?, ?, ?, ?)`,
+                args: [profileId, id, department || null, designation || 'Lecturer'],
+            });
+        } else {
+            await db.execute({
+                sql: `INSERT INTO student_profiles (id, student_id, class_batch, semester, program) VALUES (?, ?, ?, ?, ?)`,
+                args: [profileId, id, class_batch || null, semester || null, program || null],
+            });
+        }
 
         res.status(201).json({
             message: 'Registration successful',
