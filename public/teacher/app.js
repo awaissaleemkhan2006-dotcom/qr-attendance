@@ -216,7 +216,7 @@ async function loadSessions() {
                 : '<span class="badge badge-active"><span class="pulse-dot"></span> Active</span>'}
                             </td>
                             <td>${s.attendance_count}</td>
-                            <td style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <td style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
                                 <button class="btn btn-ghost btn-sm" onclick="viewSessionAttendance('${s.id}', '${escapeHtml(s.course_name || '')}')">
                                     View
                                 </button>
@@ -227,6 +227,9 @@ async function loadSessions() {
                                 <button class="btn btn-sm" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3);" onclick="endSessionFromDashboard('${s.id}')">
                                     End Session
                                 </button>` : ''}
+                                <button class="btn btn-sm" style="background:transparent;color:#6b7280;border:1px solid rgba(255,255,255,0.08);padding:6px 8px;" title="Delete session" onclick="confirmDeleteSession(this,'${s.id}')">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                                </button>
                             </td>
                         </tr>
                     `).join('')}
@@ -385,6 +388,40 @@ async function doStopSession(sessionId) {
 async function endSessionFromDashboard(sessionId) {
     const ok = await doStopSession(sessionId);
     if (ok) loadSessions();
+}
+
+// Inline 2-click delete confirmation (avoids window.confirm being blocked)
+function confirmDeleteSession(btn, sessionId) {
+    // If already showing confirm state, cancel it
+    const td = btn.closest('td');
+    const existing = td.querySelector('.delete-confirm');
+    if (existing) { existing.remove(); btn.style.display = ''; return; }
+
+    btn.style.display = 'none';
+    const confirm = document.createElement('div');
+    confirm.className = 'delete-confirm';
+    confirm.style.cssText = 'display:flex;gap:6px;align-items:center;';
+    confirm.innerHTML = `
+        <span style="font-size:12px;color:#9ca3af;">Delete?</span>
+        <button class="btn btn-sm" style="background:rgba(239,68,68,0.9);color:white;border:none;" onclick="deleteSession('${sessionId}')">Yes, Delete</button>
+        <button class="btn btn-ghost btn-sm" onclick="this.closest('.delete-confirm').remove();document.querySelector('[title=\\'Delete session\\'][onclick*=\\'${sessionId}\\']').style.display='';">Cancel</button>
+    `;
+    td.appendChild(confirm);
+}
+
+async function deleteSession(sessionId) {
+    try {
+        const res = await fetch(`${API_BASE}/sessions/${sessionId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        showToast('Session deleted.', 'success');
+        loadSessions();
+    } catch (err) {
+        showToast(err.message || 'Failed to delete session', 'error');
+    }
 }
 
 // Resume an active session — go back to live session screen + restart QR polling

@@ -445,6 +445,27 @@ app.get('/api/sessions/:id', verifyToken, async (req, res) => {
     }
 });
 
+// Delete session (teacher only — must own the session)
+app.delete('/api/sessions/:id', verifyToken, requireRole('teacher'), async (req, res) => {
+    try {
+        const db = await ensureDb();
+        const session = await db.execute({
+            sql: 'SELECT * FROM sessions WHERE id = ? AND teacher_id = ?',
+            args: [req.params.id, req.user.user_id],
+        });
+        if (session.rows.length === 0) return res.status(404).json({ error: 'Session not found or access denied' });
+
+        // Delete cascade: nonces → attendance → session
+        await db.execute({ sql: 'DELETE FROM used_nonces WHERE session_id = ?', args: [req.params.id] });
+        await db.execute({ sql: 'DELETE FROM attendance WHERE session_id = ?', args: [req.params.id] });
+        await db.execute({ sql: 'DELETE FROM sessions WHERE id = ?', args: [req.params.id] });
+
+        res.json({ message: 'Session deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // ═══════════════════════════════════════════════════════════════
 // STUDENT ROUTES
 // ═══════════════════════════════════════════════════════════════
