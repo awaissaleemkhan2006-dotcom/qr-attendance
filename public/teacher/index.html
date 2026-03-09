@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,11 @@
     <meta name="description" content="Secure QR-Based Attendance Management System — Teacher Dashboard">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/teacher/style.css">
 </head>
+
 <body>
     <!-- ── Login Screen ───────────────────────────────────────── -->
     <div id="login-screen" class="screen active">
@@ -19,10 +22,10 @@
                 <div class="login-header">
                     <div class="logo-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="7" height="7" rx="1"/>
-                            <rect x="14" y="3" width="7" height="7" rx="1"/>
-                            <rect x="3" y="14" width="7" height="7" rx="1"/>
-                            <circle cx="17.5" cy="17.5" r="3.5"/>
+                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                            <circle cx="17.5" cy="17.5" r="3.5" />
                         </svg>
                     </div>
                     <h1>QR Attendance</h1>
@@ -31,15 +34,19 @@
                 <form id="login-form">
                     <div class="input-group">
                         <label for="login-id">University ID</label>
-                        <input type="text" id="login-id" placeholder="Enter your university ID" required autocomplete="username">
+                        <input type="text" id="login-id" placeholder="Enter your university ID" required
+                            autocomplete="username">
                     </div>
                     <div class="input-group">
                         <label for="login-password">Password</label>
-                        <input type="password" id="login-password" placeholder="Enter password" required autocomplete="current-password">
+                        <input type="password" id="login-password" placeholder="Enter password" required
+                            autocomplete="current-password">
                     </div>
                     <button type="submit" class="btn btn-primary btn-full" id="login-btn">
                         <span>Sign In</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                     </button>
                     <div id="login-error" class="error-msg hidden"></div>
                 </form>
@@ -53,10 +60,10 @@
             <div class="nav-brand">
                 <div class="logo-icon small">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="3" y="3" width="7" height="7" rx="1"/>
-                        <rect x="14" y="3" width="7" height="7" rx="1"/>
-                        <rect x="3" y="14" width="7" height="7" rx="1"/>
-                        <circle cx="17.5" cy="17.5" r="3.5"/>
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <circle cx="17.5" cy="17.5" r="3.5" />
                     </svg>
                 </div>
                 <span>QR Attendance</span>
@@ -72,7 +79,9 @@
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-icon courses">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 016.5 2H20v20H6.5a2.5 2.5 0 010-5H20"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5v-15A2.5 2.5 0 016.5 2H20v20H6.5a2.5 2.5 0 010-5H20" />
+                        </svg>
                     </div>
                     <div class="stat-info">
                         <span class="stat-value" id="stat-courses">0</span>
@@ -81,7 +90,10 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon sessions">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" />
+                            <path d="M16 2v4M8 2v4M3 10h18" />
+                        </svg>
                     </div>
                     <div class="stat-info">
                         <span class="stat-value" id="stat-sessions">0</span>
@@ -90,7 +102,10 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon active">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
                     </div>
                     <div class="stat-info">
                         <span class="stat-value" id="stat-active">0</span>
@@ -104,7 +119,9 @@
                 <div class="section-header">
                     <h2>My Courses</h2>
                     <button class="btn btn-accent" id="create-course-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
                         <span>New Course</span>
                     </button>
                 </div>
@@ -129,7 +146,9 @@
     <div id="session-screen" class="screen">
         <nav class="top-nav">
             <button class="btn btn-ghost" id="back-to-dashboard">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
                 <span>Dashboard</span>
             </button>
             <div class="session-badge" id="session-badge">
@@ -137,7 +156,9 @@
                 <span>LIVE SESSION</span>
             </div>
             <button class="btn btn-danger" id="stop-session-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="6" y="6" width="12" height="12" rx="1" />
+                </svg>
                 <span>End Session</span>
             </button>
         </nav>
@@ -240,6 +261,7 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast hidden"></div>
 
-    <script src="app.js"></script>
+    <script src="/teacher/app.js"></script>
 </body>
+
 </html>
